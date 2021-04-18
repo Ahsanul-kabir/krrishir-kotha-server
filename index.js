@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require ('cors');
 const fs = require ('fs-extra');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 const fileUpload = require('express-fileupload');
 
@@ -47,9 +48,6 @@ client.connect(err => {
         res.send(documents)
       })
   });
-
-
-
 
 
   //   app.post('/ordersByEmail', (req, res) => {
@@ -119,6 +117,12 @@ app.post('/addService', (req, res) => {
       })
 });
 
+app.delete('/deleteService/:id', (req, res) => {
+  const id = ObjectId(req.params.id);
+  console.log('delete this', id);
+  serviceCollection.findOneAndDelete({ _id: id })
+    .then(documents => res.send(!!documents.value))
+})
 
 app.post('/makeAdmin', (req, res) => {
   const admin = req.body;
