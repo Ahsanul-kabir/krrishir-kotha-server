@@ -25,7 +25,7 @@ client.connect(err => {
 
     app.post('/addOrder', (req, res) => {
         const order = req.body;
-        console.log(order)
+        // console.log(order)
         orderCollection.insertOne(order)
         .then(result => {
             res.send(result.insertedCount > 0)
@@ -38,6 +38,19 @@ client.connect(err => {
           res.send(documents)
         })
     })
+
+    app.post('/ordersSpecific', (req, res) => {
+      const order = req.body.email;
+      // console.log('from post orders', order)
+      orderCollection.find({email:order})
+      .toArray((err, documents) => {
+        res.send(documents)
+      })
+  });
+
+
+
+
 
   //   app.post('/ordersByEmail', (req, res) => {
   //     const email = req.body.email;
@@ -105,6 +118,7 @@ app.post('/addService', (req, res) => {
           res.send(documents);
       })
 });
+
 
 app.post('/makeAdmin', (req, res) => {
   const admin = req.body;
